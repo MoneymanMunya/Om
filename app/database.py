@@ -6,15 +6,15 @@ app = FastAPI()
 def home():
     return {"message": "FastAPI is working!"}
 
-from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import create_engine, MetaData
 from sqlalchemy.orm import sessionmaker
 
-DATABASE_URL = "postgresql://MoneymanMunya:Munya10*@localhost/omni_db"
+DATABASE_URL = "postgresql://omni_user:yourpassword@localhost/omni_db"
 
-engine = create_engine(DATABASE_URL)  
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)  
-Base = declarative_base()
+engine = create_engine(DATABASE_URL)
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+metadata = MetaData()
+
 
 
 
