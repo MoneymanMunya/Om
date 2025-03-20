@@ -1,9 +1,9 @@
-from fastapi import FastAPI
+rom fastapi import FastAPI
 
 app = FastAPI()
 
 @app.get("/")
-def read_root():
+def home():
     return {"message": "FastAPI is working!"}
 
 from sqlalchemy import Column, Integer, String, ForeignKey

@@ -1,0 +1,3 @@
+@router.post("/", response_model=UserSchema)
+async def create_user(user: UserSchema, db: Session = Depends(get_db)):
+    ...
