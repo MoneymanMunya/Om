@@ -15,3 +15,23 @@ CREATE TABLE tasks (
     due_date TIMESTAMP,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+from pydantic import BaseModel, EmailStr
+
+class UserCreate(BaseModel):
+    name: str
+    email: EmailStr
+    password: str
+
+class UserResponse(BaseModel):
+    id: int
+    name: str
+    email: EmailStr
+
+    class Config:
+        orm_mode = True
+from pydantic import BaseModel
+
+class UserSchema(BaseModel):
+    username: str
+    email: str
+    password: str
