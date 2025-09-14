@@ -1,42 +1,23 @@
-from schemas import UserSchema
-from database import get_db
-
 from fastapi import FastAPI
-
-app = FastAPI()
-
-@app.get("/user")
-def home():
-    return {"message": "FastAPI is working!"}
-
-@app.post("/users")
-async def create_user(user: UserSchema, db: Session = Depends(get_db)):
-    ...
-app.include_router(users_router, prefix="/users", tags=["Users"])
-from fastapi import FastAPI, Depends
-from sqlalchemy.orm import Session
-from database import engine, SessionLocal, Base
-import models, schemas
-from routes.users import users_router
-
-app = FastAPI()
+from .database import engine, Base
+from .routes.user import router as user_router
+from .routes.tasks import router as tasks_router
 
 # Create database tables
 Base.metadata.create_all(bind=engine)
 
-# Dependency to get database session
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
+app = FastAPI(
+    title="Omni API",
+    description="API for the Omni personal AI companion app.",
+    version="0.1.0"
+)
 
-# ✅ Create a new user (POST /users)
-@app.post("/users", response_model=schemas.UserResponse)
-def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
-    db_user = models.User(name=user.name, email=user.email, password=user.password)
-    db.add(db_user)
-    db.commit()
-    db.refresh(db_user)
-    return db_user
+@app.get("/")
+def home():
+    return {"message": "Welcome to Omni API!"}
+
+# Include router
+# There is a typo in the original `main.py`: `users_router` should be `user_router`
+# and it should be imported from `.routes.user`, not `routes.users`
+app.include_router(user_router, prefix="/users", tags=["Users"])
+app.include_router(tasks_router, prefix="/tasks", tags=["Tasks"])
